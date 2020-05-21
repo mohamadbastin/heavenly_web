@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:howler/howler.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 void main() {
   runApp(MyApp());
@@ -136,7 +137,95 @@ class _AlbumsState extends State<Albums> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : Padding(
+                : 
+                ScreenTypeLayout(
+                  tablet: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      // shrinkWrap: true,
+                      // physics: ClampingScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: myObject.albums.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.all(30),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/songs', arguments: {
+                              "pk": myObject.albums[index]['pk'],
+                              "image": Image.network(
+                                myObject.albums[index]['image'],
+                                fit: BoxFit.cover,
+                              ),
+                            });
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            // height: 300,
+                            // width: 100,
+                            child: Stack(
+                              children: [
+                                Image.network(
+                                  myObject.albums[index]['image'],
+                                  fit: BoxFit.cover,
+                                ),
+                                // Center(
+                                //   child: Text(myObject.albums[index]['title']),
+                                // )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  mobile: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      // shrinkWrap: true,
+                      // physics: ClampingScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: myObject.albums.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.all(30),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/songs', arguments: {
+                              "pk": myObject.albums[index]['pk'],
+                              "image": Image.network(
+                                myObject.albums[index]['image'],
+                                fit: BoxFit.cover,
+                              ),
+                            });
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            // height: 300,
+                            // width: 100,
+                            child: Stack(
+                              children: [
+                                Image.network(
+                                  myObject.albums[index]['image'],
+                                  fit: BoxFit.cover,
+                                ),
+                                // Center(
+                                //   child: Text(myObject.albums[index]['title']),
+                                // )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  desktop: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     child: GridView.builder(
                       scrollDirection: Axis.vertical,
@@ -178,7 +267,9 @@ class _AlbumsState extends State<Albums> {
                         ),
                       ),
                     ),
-                  ));
+                  ),
+                )
+                  );
   }
 }
 
